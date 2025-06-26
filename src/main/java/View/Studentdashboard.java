@@ -17,6 +17,7 @@ public class Studentdashboard extends javax.swing.JFrame {
      */
     public Studentdashboard() {
         initComponents();
+        setSize(700, 520);
     }
 
     /**
@@ -29,32 +30,35 @@ public class Studentdashboard extends javax.swing.JFrame {
     private void initComponents() {
 
         btnanalytics = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        btnanalytics.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        btnanalytics.setForeground(new java.awt.Color(51, 153, 255));
         btnanalytics.setText("Analytics");
         btnanalytics.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnanalyticsActionPerformed(evt);
             }
         });
+        getContentPane().add(btnanalytics, new org.netbeans.lib.awtextra.AbsoluteConstraints(144, 93, 375, 103));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(138, 138, 138)
-                .addComponent(btnanalytics)
-                .addContainerGap(184, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(70, 70, 70)
-                .addComponent(btnanalytics)
-                .addContainerGap(207, Short.MAX_VALUE))
-        );
+        jButton1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 153, 255));
+        jButton1.setText("Reports");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(144, 260, 375, 101));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/img2.jpg"))); // NOI18N
+        jLabel1.setText("jLabel1");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 520));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -64,6 +68,12 @@ public class Studentdashboard extends javax.swing.JFrame {
         av.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnanalyticsActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Reports reports = new Reports();
+        reports.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -92,5 +102,7 @@ public class Studentdashboard extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnanalytics;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

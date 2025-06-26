@@ -4,6 +4,11 @@
  */
 package View;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author User
@@ -32,14 +37,13 @@ public class login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtname = new javax.swing.JTextField();
-        txtpassword = new javax.swing.JTextField();
         btnlogin = new javax.swing.JButton();
         cmbrole = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         back = new javax.swing.JButton();
         btnclear = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        txtpass = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 204, 204));
@@ -47,14 +51,13 @@ public class login extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel1.setText("Name");
+        jLabel1.setText("ID");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 90, 69, 22));
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel2.setText("Password");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 170, -1, -1));
         getContentPane().add(txtname, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 92, 190, -1));
-        getContentPane().add(txtpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 163, 190, -1));
 
         btnlogin.setBackground(new java.awt.Color(255, 102, 102));
         btnlogin.setForeground(new java.awt.Color(255, 255, 255));
@@ -92,24 +95,73 @@ public class login extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel4.setText(" Login");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, 70, 30));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 20, 70, 30));
 
-        jPasswordField1.setText("jPasswordField1");
-        getContentPane().add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 200, 180, -1));
+        txtpass.setText("jPasswordField1");
+        getContentPane().add(txtpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 162, 190, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
-            String role = cmbrole.getSelectedItem().toString();
-    // You can also add username/password validation here
-    
-    if (role.equals("Admin")) {
-        new Dashboard().setVisible(true);
-    } else {
-        new Studentdashboard().setVisible(true);
+     String username = txtname.getText().trim();
+    String password = new String(txtpass.getPassword()).trim();
+    String selectedRole = (String) cmbrole.getSelectedItem();
+
+    if (username.isEmpty() || password.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please enter both username and password.");
+        return;
     }
-    this.dispose();  // Close the login window
+
+    String role = authenticateUser(username, password, selectedRole);
+
+    if (role != null) {
+        if (role.equals("Admin")) {
+            new Dashboard().setVisible(true);
+        } else {
+            new Studentdashboard().setVisible(true);
+        }
+        this.dispose(); // Close login window
+    } else {
+        JOptionPane.showMessageDialog(this, "Invalid username, password, or role.");
+    }
+}
+
+// Dummy method for demo - replace with your actual authentication logic
+private String authenticateUser(String username, String password, String selectedRole) {
+        String role = null;
+
+    try (Connection con = DatabaseManager.getConnection()) {
+
+        if ("Admin".equals(selectedRole)) {
+            String sql = "SELECT * FROM admin WHERE admin_id=? AND password=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                role = "Admin";
+            }
+
+        } else if ("Student".equals(selectedRole)) {
+            String sql = "SELECT * FROM student WHERE student_id=? AND student_id=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, username);
+            ps.setString(2, password); // password = student_id
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                role = "Student";
+            }
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+    }
+
+    return role;
+
+   
     }//GEN-LAST:event_btnloginActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
@@ -119,7 +171,7 @@ public class login extends javax.swing.JFrame {
     private void btnclearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnclearActionPerformed
         txtname.setText("");
         cmbrole.setSelectedIndex(-1);
-        txtpassword.setText("");
+        
     }//GEN-LAST:event_btnclearActionPerformed
 
     /**
@@ -156,8 +208,7 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField txtname;
-    private javax.swing.JTextField txtpassword;
+    private javax.swing.JPasswordField txtpass;
     // End of variables declaration//GEN-END:variables
 }

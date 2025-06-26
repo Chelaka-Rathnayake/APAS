@@ -1,0 +1,137 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="average" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="013eba4e-a2d4-417d-8973-cb0cee1009d1">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MYSQL"/>
+	<query language="SQL"><![CDATA[SELECT
+  s.student_id,
+  s.name,
+  s.course,
+  ROUND(
+    (m.subject1 + m.subject2 + m.subject3 + m.subject4 + m.subject5) / 5.0,
+    2
+  ) AS student_avg,
+  ROUND(
+    AVG(
+      (m.subject1 + m.subject2 + m.subject3 + m.subject4 + m.subject5) / 5.0
+    ) OVER (PARTITION BY s.course),
+    2
+  ) AS course_avg
+FROM student s
+JOIN marks m ON s.student_id = m.student_id
+ORDER BY s.course, s.student_id]]></query>
+	<field name="student_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="student_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="student_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="student"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="student"/>
+	</field>
+	<field name="course" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="course"/>
+		<property name="com.jaspersoft.studio.field.label" value="course"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="student"/>
+	</field>
+	<field name="student_avg" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="student_avg"/>
+		<property name="com.jaspersoft.studio.field.label" value="student_avg"/>
+	</field>
+	<field name="course_avg" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="course_avg"/>
+		<property name="com.jaspersoft.studio.field.label" value="course_avg"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="77" splitType="Stretch">
+		<element kind="staticText" uuid="e1d771a5-1103-4d94-ab4d-4dec5ef81ec4" x="0" y="0" width="555" height="60" fontSize="20.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[Performance Analysis: Individual & Departmental Averages]]></text>
+		</element>
+		<element kind="line" uuid="6bbc42c5-73d7-4181-a5a6-ff797c9f18d2" x="-20" y="73" width="595" height="2">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+	</title>
+	<pageHeader height="3" splitType="Stretch"/>
+	<columnHeader height="36" splitType="Stretch">
+		<element kind="staticText" uuid="eaa66ff2-098a-4957-bfef-12ad39c37017" x="10" y="0" width="100" height="30" bold="true">
+			<text><![CDATA[Student_id]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d9b0b73d-895c-48f5-aa2a-bde9db187d1d"/>
+		</element>
+		<element kind="staticText" uuid="af6c93c1-ff98-460d-950c-d46f94344415" x="120" y="0" width="100" height="30" bold="true">
+			<text><![CDATA[Name]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f040b4fa-4686-42c1-95c7-c5ef85975a72"/>
+		</element>
+		<element kind="staticText" uuid="afa8616e-0ca0-47db-a60f-bbc8ed040f03" x="360" y="2" width="100" height="30" bold="true">
+			<text><![CDATA[Student_avg]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fd7f66b9-22e7-429e-a79b-39e46968a371"/>
+		</element>
+		<element kind="staticText" uuid="3526683f-fdb1-4fac-be6e-30e3e9b141bc" x="475" y="0" width="100" height="30" bold="true">
+			<text><![CDATA[Course_avg]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b2327bfc-4c72-432b-93ff-36d74e1fa65a"/>
+		</element>
+		<element kind="staticText" uuid="93ed52ab-256f-4155-a2ca-77bf0abdda3d" x="227" y="2" width="100" height="30" bold="true">
+			<text><![CDATA[Course]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d8cdfe39-1d92-48db-913f-d87134eb10b7"/>
+		</element>
+		<element kind="line" uuid="dcafbb87-f95a-4110-8178-a62e11845df8" x="-16" y="31" width="591" height="2">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="55" splitType="Stretch">
+			<element kind="textField" uuid="07f716ce-3a54-486d-b457-311d8a5321bb" x="10" y="0" width="100" height="30">
+				<expression><![CDATA[$F{student_id}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d9b0b73d-895c-48f5-aa2a-bde9db187d1d"/>
+			</element>
+			<element kind="textField" uuid="e5fd0782-c8d8-4055-9bd9-1caa54a07158" x="110" y="0" width="100" height="30">
+				<expression><![CDATA[$F{name}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f040b4fa-4686-42c1-95c7-c5ef85975a72"/>
+			</element>
+			<element kind="textField" uuid="a11ba9c1-6522-4f68-9b3a-746467f66d85" x="230" y="0" width="100" height="30">
+				<expression><![CDATA[$F{course}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d8cdfe39-1d92-48db-913f-d87134eb10b7"/>
+			</element>
+			<element kind="textField" uuid="47d291a9-57dd-42c9-a7b5-2b9ff1d6f621" x="350" y="0" width="100" height="30">
+				<expression><![CDATA[$F{student_avg}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fd7f66b9-22e7-429e-a79b-39e46968a371"/>
+			</element>
+			<element kind="textField" uuid="c7be3de9-59d3-49cf-b7e6-2b873025d686" x="475" y="0" width="100" height="30">
+				<expression><![CDATA[$F{course_avg}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b2327bfc-4c72-432b-93ff-36d74e1fa65a"/>
+			</element>
+			<element kind="line" uuid="6b09ee77-e924-4386-a3e1-b2a9b6db16d7" x="90" y="-40" width="1" height="90"/>
+			<element kind="line" uuid="97284e4f-d5bb-40f4-a4ee-6a22e4581e85" x="190" y="-40" width="1" height="90"/>
+			<element kind="line" uuid="a8e8fa09-be67-441e-b071-effacdaa8010" x="340" y="-42" width="1" height="90"/>
+			<element kind="line" uuid="2d13fa30-8786-4f3d-a46a-1e86933ba638" x="-10" y="50" width="595" height="3"/>
+			<element kind="line" uuid="8b293d8b-bdd3-4c38-9182-69dd89673d5d" x="470" y="-35" width="1" height="90"/>
+		</band>
+	</detail>
+	<columnFooter height="301" splitType="Stretch">
+		<element kind="chart" chartType="line" uuid="e191e47b-9f05-4393-b130-8d8f9570ada0" x="0" y="-25" width="555" height="190" evaluationTime="Report">
+			<dataset kind="category">
+				<series>
+					<seriesExpression><![CDATA["Average Marks per Student"]]></seriesExpression>
+					<categoryExpression><![CDATA[$F{name}]]></categoryExpression>
+					<valueExpression><![CDATA[$F{student_avg}]]></valueExpression>
+				</series>
+			</dataset>
+			<plot categoryAxisLabelColor="#000000" categoryAxisTickLabelColor="#000000" categoryAxisLineColor="#000000" valueAxisLabelColor="#000000" valueAxisTickLabelColor="#000000" valueAxisLineColor="#000000"/>
+		</element>
+		<element kind="chart" chartType="bar" uuid="5a296d8e-b6e8-4c2c-85fd-fcd268c3cdbf" x="3" y="200" width="555" height="100" evaluationTime="Report">
+			<dataset kind="category">
+				<series>
+					<seriesExpression><![CDATA["Average Marks per Course"
+
+]]></seriesExpression>
+					<categoryExpression><![CDATA[$F{course}]]></categoryExpression>
+					<valueExpression><![CDATA[$F{course_avg}]]></valueExpression>
+				</series>
+			</dataset>
+			<plot categoryAxisLabelColor="#000000" categoryAxisTickLabelColor="#000000" categoryAxisLineColor="#000000" valueAxisLabelColor="#000000" valueAxisTickLabelColor="#000000" valueAxisLineColor="#000000">
+				<itemLabel/>
+			</plot>
+		</element>
+	</columnFooter>
+	<pageFooter splitType="Stretch"/>
+	<summary splitType="Stretch"/>
+</jasperReport>

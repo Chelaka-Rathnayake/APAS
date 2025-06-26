@@ -6,6 +6,7 @@ package View;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -281,31 +282,50 @@ public class StudentManagement extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUpdateIdActionPerformed
 
     private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
-                                          
-    String id = txtUpdateId.getText().trim();
+String id = txtUpdateId.getText().trim();
 
-    if (id.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Please enter a Student ID to delete.");
-        return;
+if (id.isEmpty()) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Please enter a Student ID to delete.");
+    return;
+}
+
+int confirm = javax.swing.JOptionPane.showConfirmDialog(
+    this,
+    "Are you sure you want to delete ID: " + id + "?",
+    "Confirm Delete",
+    javax.swing.JOptionPane.YES_NO_OPTION
+);
+
+if (confirm != javax.swing.JOptionPane.YES_OPTION) return;
+
+try (
+    Connection conn = DatabaseManager.getConnection()
+) {
+    // Delete related marks first
+    String deleteMarksSQL = "DELETE FROM marks WHERE student_id = ?";
+    try (PreparedStatement pstMarks = conn.prepareStatement(deleteMarksSQL)) {
+        pstMarks.setString(1, id);
+        pstMarks.executeUpdate();
     }
 
-    int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "Are you sure you want to delete ID: " + id + "?", "Confirm Delete", javax.swing.JOptionPane.YES_NO_OPTION);
-    if (confirm != javax.swing.JOptionPane.YES_OPTION) return;
+    // Then delete the student
+    String deleteStudentSQL = "DELETE FROM student WHERE student_id = ?";
+    try (PreparedStatement pstStudent = conn.prepareStatement(deleteStudentSQL)) {
+        pstStudent.setString(1, id);
+        int affected = pstStudent.executeUpdate();
 
-    try (Connection conn = DatabaseManager.getConnection()) {
-        String sql = "DELETE FROM student WHERE student_id = ?";
-        try (java.sql.PreparedStatement pst = conn.prepareStatement(sql)) {
-            pst.setString(1, id);
-            int affected = pst.executeUpdate();
-            if (affected > 0) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Student with ID " + id + " deleted.");
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(this, "No student found with ID: " + id);
-            }
+        if (affected > 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Student with ID " + id + " deleted.");
+            
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "No student found with ID: " + id);
         }
-    } catch (Exception ex) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Error deleting student: " + ex.getMessage());
     }
+
+} catch (Exception ex) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Error deleting student: " + ex.getMessage());
+}
+
 
 
     }//GEN-LAST:event_btndeleteActionPerformed

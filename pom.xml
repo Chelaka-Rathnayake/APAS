@@ -36,6 +36,27 @@
     <version>1.5.5</version> <!-- Or the latest version -->
       <type>jar</type>
     </dependency>
+    <dependency>
+        <groupId>net.sf.jasperreports</groupId>
+        <artifactId>jasperreports</artifactId>
+        <version>7.0.3</version>
+    </dependency>
+
+    <!-- Required for charting -->
+    <dependency>
+        <groupId>net.sf.jasperreports</groupId>
+        <artifactId>jasperreports-chart-customizers</artifactId>
+        <version>7.0.3</version>
+    </dependency>
+
+    <!-- Optional but helpful -->
+    <dependency>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy-all</artifactId>
+        <version>2.4.15</version> <!-- Match what's in JasperStudio if needed -->
+    </dependency>
+
+
 
     </dependencies>
    
